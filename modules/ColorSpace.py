@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 sys.path.append(".\\")
-import vectorizedMatrix as vmat
+from  modules.vectorizedMatrix import Vec3, Mat3x3
 
 #****************
 class ColorSpace:
@@ -19,10 +19,10 @@ class ColorSpace:
   # Convert a linear sRGB color to an sRGB color
   # --------------------------------------------
     # generate xyz chromaticity coordinates (x + y + z = 1) from xy coordinates
-    r = vmat.Vec3(self.red.x, self.red.y, 1.0 - (self.red.x + self.red.y))
-    g = vmat.Vec3(self.green.x, self.green.y, 1.0 - (self.green.x + self.green.y))
-    b = vmat.Vec3(self.blue.x, self.blue.y, 1.0 - (self.blue.x + self.blue.y))
-    w = vmat.Vec3(self.white.x, self.white.y, 1.0 - (self.white.x + self.white.y))
+    r = Vec3(self.red.x, self.red.y, 1.0 - (self.red.x + self.red.y))
+    g = Vec3(self.green.x, self.green.y, 1.0 - (self.green.x + self.green.y))
+    b = Vec3(self.blue.x, self.blue.y, 1.0 - (self.blue.x + self.blue.y))
+    w = Vec3(self.white.x, self.white.y, 1.0 - (self.white.x + self.white.y))
 
     # Convert white xyz coordinate to XYZ coordinate by letting that the white
     # point have and XYZ relative luminance of 1.0. Relative luminance is the Y
@@ -57,7 +57,7 @@ class ColorSpace:
     # We now have an equation for the components of the scale matrix 'S' and
     # can compute 'M' from 'N' and 'S'
 
-    m = vmat.Mat3x3()
+    m = Mat3x3()
     m.setCol(0, r)
     m.setCol(1, g)
     m.setCol(2, b)

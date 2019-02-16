@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 '''**********************************************************************************
   Created by Charlie GARDAI alias Moltenhead - 2019
   ___________________________________________________________________________________
@@ -14,12 +14,12 @@
 
 # ------ IMPORTS ------ #
 # Ext
+
 import numpy              as np
 import colorsys           as clrs
 import matplotlib.image   as mpimg
 # Local
 import re
-import csv
 import glob
 import os.path            as path
 # Home brewed
@@ -27,7 +27,8 @@ import sys
 sys.path.append(".\\modules")
 import  sRGBUtil
 from    vectorizedMatrix  import Vec2
-from    Imager            import Imager
+#from    Imager            import Imager
+from    Sounder           import Sounder
 from    ColorSpace        import ColorSpace
 
 # ------ COLORSPACE DEFINITION ------ #
@@ -39,11 +40,12 @@ white_xy   = Vec2(0.3127, 0.3290)                                               
 sRGBSpace  = ColorSpace(red_xy, green_xy, blue_xy, white_xy)                    # sRGB          ColorSpace
 
 # ------ PATHING DEFINITIONS ------ #
-ROOT      = path.dirname(path.abspath(__file__))
-CONVERTER = ROOT + "\\ressources\\XYZ_to_Wavelength_nm.csv"
+ROOT            = path.dirname(path.abspath(__file__))
 
 imageList = []
 for f in glob.glob("./*.png"):
+  imageList.append(re.split(r'\\', f)[1])
+for f in glob.glob("./*.jpg"):
   imageList.append(re.split(r'\\', f)[1])
 
 # ------ USER INPUT MANAGEMNT ------ #
@@ -77,12 +79,8 @@ img     = mpimg.imread(imgPath)
 if img.dtype == np.float32:                                                        # if result isn't integer array
   img   = (img * 255).astype(np.uint8)
 
-# ------ WAVELENGTH TABLE CREATION ------ #
-wavelengthTable = {}
-with open(CONVERTER, 'rb') as csvfile:
-  spamreader = csv.reader(csvfile, delimiter=', ', quotechar='|')
-
 # ------ PIXEL BY PIXEL PROCESS ------ #
+sounder          = Sounder()
 pixelCount       = 0
 filledPixelCount = 0
 
@@ -90,7 +88,7 @@ for pixelRow in img:
   for pixel in pixelRow:                                                           # for each pixel in img
     pixelCount += 1
     RGBASum    = 0
-    for value in pixel.copy().pop(-1):
+    for value in pixel.copy():
       RGBASum += value
     
     if RGBASum * pixel[-1] > 0:                                                    # if (sum of RGB) * A > 0
@@ -100,6 +98,7 @@ for pixelRow in img:
       toXYZ     = sRGBSpace.sRGBColorToXYZ(sRGBColor)                              # get color XYZ position
       # print("XYZ{} at: [{}]".format(toXYZ.toArray(), pixelCount))
       XYZarray  = toXYZ.toArray()
+      sounder.requestXYZPlay(XYZarray, 0.2)
 
 # def rgbToHertz(rgb):
 #   hsv = clrs.rgb_to_hsv(rgb[0],rgb[1],rgb[2])

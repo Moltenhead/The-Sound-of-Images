@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
+__package__ = './'
 import copy
-
-import sys
-sys.path.append(".\\")
-import sRGBUtil
+import numpy as np
 
 #**********************
 class Vec2:
@@ -37,20 +35,18 @@ class Vec3(Vec2):
   
   # --------------------
   def gammaExpand(self):
-  # cf sRGBUtil
   # --------------------
-    self.x = sRGBUtil.gammaExpand(self.x)
-    self.y = sRGBUtil.gammaExpand(self.y)
-    self.z = sRGBUtil.gammaExpand(self.z)
+    self.x = gammaExpand(self.x)
+    self.y = gammaExpand(self.y)
+    self.z = gammaExpand(self.z)
     return self
   
   # ----------------------
   def gammaCompress(self):
-  # cf sRGBUtil
   # ----------------------
-    self.x = sRGBUtil.gammaCompress(self.x)
-    self.y = sRGBUtil.gammaCompress(self.y)
-    self.z = sRGBUtil.gammaCompress(self.z)
+    self.x = gammaCompress(self.x)
+    self.y = gammaCompress(self.y)
+    self.z = gammaCompress(self.z)
     return self
 
 #**************
@@ -149,3 +145,16 @@ class Mat3x3():
   # -----------------------------------
     for idx, row in enumerate(self.m):
       self.mulRowByVec(idx, vec3)
+
+#**************************************************************
+def gammaExpand(nonlinear):
+# Convert an sRGB color channel to a linear sRGB color channel.
+#**************************************************************
+  return (nonlinear / 12.92) if (nonlinear <= 0.04045) else (np.float_power((nonlinear+0.055)/1.055, 2.4))
+
+#*************************************************************
+def gammaCompress(linear):
+# Convert a linear sRGB color channel to a sRGB color channel.
+#*************************************************************
+  return (12.92*linear) if (linear <= 0.0031308) else (1.055 * np.float_power(linear, 1.0/2.4) - 0.055)
+

@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-# ------ IMPORTS ------ #
 from __future__ import division
+# ------ IMPORTS ------ #
+__package__  = './'
 # Ext
 import  csv
-from    pyaudio import PyAudio
+from    pyaudio        import PyAudio
 # Local
 import  math
 # Home brewed
-from    sys     import path
-path.append("../")
-from    app     import ROOT
+from    os            import path, pardir
 
 # ------ CONSTANTS ------ #
+ROOT            = path.dirname(path.abspath(path.join(__file__, pardir)))
 CONVERTER_PATH  = ROOT + "\\ressources\\XYZ_to_Wavelength_nm.csv"       # conversion table of XYZ to Wavelength in nanometer
 THZ_TO_NM       = 299792.458                                            # 1 THz = THZ_TO_NM wavelength in nanometer
 BITRATE         = 16000                                                 # number of frames per seconds
@@ -20,7 +20,7 @@ BITRATE         = 16000                                                 # number
 class Sounder:
 #*************
   # ----------------------
-  def __init__(self, csv):
+  def __init__(self):
   # ----------------------
     self.cursor = 0
 
@@ -34,6 +34,8 @@ class Sounder:
   # ------------------------------------
   def get_tableAt(self, rowIdx,  label):
   # ------------------------------------
+    if rowIdx >= self.get_tableLength():
+      return False
     return self.__wavelengthTable[rowIdx][label.upper()]
 
   # ----------------------------
@@ -64,18 +66,26 @@ class Sounder:
   # -------------------------------------
   def cursorIterateMatch(self, XYZArray):
   # -------------------------------------
+    x = round(XYZArray[0]*10, 4)
+    y = round(XYZArray[1]*10, 4)
+    z = round(XYZArray[2]*10, 4)
+    print("[{}:{}:{}]".format(x,y,z))
     found = False
-    while found == False and self.cursor < self.get_tableLength():
-      found = self.cursorMatchAt(XYZArray[0], 'X')
+    while found == False:
+      if self.cursor < self.get_tableLength():
+        break
+      found = self.cursorMatchAt(x, 'X')
       if found != False:
-        found = self.cursorMatchAt(XYZArray[1], 'Y')
+        found = self.cursorMatchAt(y, 'Y')
         if found != False:
-          found = self.cursorMatchAt(XYZArray[2], 'Z')
+          found = self.cursorMatchAt(z, 'Z')
           if found != False:
+            self.cursorReset
             return found
-      else:
-        self.cursorReset()
-        return found
+      
+      found = False
+      self.cursorReset()
+      return found
   
   # --------------------------------
   def findWaveAtXYZ(self, XYZArray):
@@ -88,11 +98,15 @@ class Sounder:
         XYZArray[2]))
       return found
     
-    return found['WL']
+    if isinstance(found, list):
+      return found['WL']
+    return found
   
   # --------------------------------
   def play(self, frequency, seconds):
   # --------------------------------
+    if not isinstance(frequency, float):
+      return False
     numberOfFrames = int(BITRATE * seconds)
     restFrames = numberOfFrames % BITRATE
     waveData = ''
@@ -117,6 +131,7 @@ class Sounder:
 
   def requestXYZPlay(self, XYZArray, seconds):
     wavelength = self.findWaveAtXYZ(XYZArray)
+    print(wavelength)
     if wavelength is False:
       return
     
@@ -127,7 +142,9 @@ class Sounder:
 def convertWlToTHz(wavelength):
 # wavelength in nm to THz
 #************************************
-  return THZ_TO_NM / wavelength
+  if isinstance(wavelength, float):
+    return THZ_TO_NM / wavelength
+  return False
 
     
 

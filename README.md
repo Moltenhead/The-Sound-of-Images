@@ -7,6 +7,7 @@ Trying to produce sounds, based on images
    
 ## Features Needed:
 * modular image "shrinker" to avoid passing through hundred thousands of pixels
+
 <hr/>
 
 ### Ressources and references:

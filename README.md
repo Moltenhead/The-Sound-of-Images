@@ -2,8 +2,8 @@
 Trying to produce sounds, based on images
 
 ## Working On :
-* `app.py` on line 31: `from Sounder import Sounder`
-  * `ImportError: cannot import name 'Sounder'`
+* Most of the basics are good, there is incompatibility between XYZ converter and wavelength table though
+ * need to find what is the true problem (from converter or from relying on a nm by nm only table)
 
 ### Ressources and references:
 * [sRGB to XYZ](http://www.ryanjuckett.com/programming/rgb-color-space-conversion/) HOWTO from Ryan Juckett + what the actual converter is based on

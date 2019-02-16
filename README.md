@@ -2,7 +2,7 @@
 Trying to produce sounds, based on images
 
 ## Working On :
-* `app.py` error on line 31 `from Sounder import Sounder`class `ImportError: cannot import name 'Sounder'`
+* `app.py` on line 31: `from Sounder import Sounder`class `ImportError: cannot import name 'Sounder'`
 
 ### Ressources and references:
 * [sRGB to XYZ](http://www.ryanjuckett.com/programming/rgb-color-space-conversion/) HOWTO from Ryan Juckett + what the actual converter is based on

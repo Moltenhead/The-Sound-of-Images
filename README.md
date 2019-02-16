@@ -1,6 +1,10 @@
 # The Sound of Images
 Trying to produce sounds, based on images
 
+## Working On :
+* `app.py` on line 31: `from Sounder import Sounder`
+  * `ImportError: cannot import name 'Sounder'`
+
 ### Ressources and references:
 * [sRGB to XYZ](http://www.ryanjuckett.com/programming/rgb-color-space-conversion/) HOWTO from Ryan Juckett + what the actual converter is based on
 * [XYZ to Wavelength in nm](https://www.waveformlighting.com/files/color_matching_functions.txt) values

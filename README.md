@@ -8,6 +8,7 @@ Trying to produce sounds, based on images
 ## Features Needed:
 * modular image "shrinker" to avoid passing through hundred thousands of pixels
 <hr/>
+
 ### Ressources and references:
 * [sRGB to XYZ](http://www.ryanjuckett.com/programming/rgb-color-space-conversion/) HOWTO from Ryan Juckett + what the actual converter is based on
 * [XYZ to Wavelength in nm](https://www.waveformlighting.com/files/color_matching_functions.txt) values

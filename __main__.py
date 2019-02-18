@@ -1,103 +1,67 @@
 # -*- coding: utf-8 -*-
-'''**********************************************************************************
-  Created by Charlie GARDAI alias Moltenhead - 2019
-  ___________________________________________________________________________________
+if __name__ == '__main__':                                                            # ensure multiprocessing won't call the main
+  '''**********************************************************************************
+    Created by Charlie GARDAI alias Moltenhead - 2019
+    ___________________________________________________________________________________
 
-  Thanks to Ryan Juckett online ressource
-  @http://www.ryanjuckett.com/programming/rgb-color-space-conversion/
+    Thanks to Ryan Juckett online ressource
+    @http://www.ryanjuckett.com/programming/rgb-color-space-conversion/
 
-  I would have not been able to math as good for the sRGB to XYZ convertion, and this
-  would not have been possible without he's app references ; at least not as fast.
-  Its base example has been here completly reworked into python and also has been
-  reoriented mostlty into POO for convenience.
-**********************************************************************************'''
+    I would have not been able to math as good for the sRGB to XYZ convertion, and this
+    would not have been possible without he's app references ; at least not as fast.
+    Its base example has been here completly reworked into python and also has been
+    reoriented mostlty into POO for convenience.
+  **********************************************************************************'''
 
-# ------ IMPORTS ------ #
-# Ext
+  # ------ IMPORTS ------ #
+  # Ext
+  import numpy              as np
+  # Local
+  import re
+  import glob
+  import time
+  import multiprocessing
+  import os.path            as path
+  # Home brewed
+  import  modules.RGBUtil  as RGBUtil
+  from    modules.vectorizedMatrix        import Vec2
+  from    modules.Imager                  import Imager
+  from    modules.Sounder                 import Sounder
+  from    modules.ColorSpace              import ColorSpace
+  from    modules.processUtil             import splitPixarray, pixelProcess
 
-import numpy              as np
-import colorsys           as clrs
-import matplotlib.image   as mpimg
-# Local
-import re
-import glob
-import os.path            as path
-# Home brewed
-import  modules.sRGBUtil  as sRGBUtil
-from    modules.vectorizedMatrix        import Vec2
-from    modules.Sounder                 import Sounder
-from    modules.ColorSpace              import ColorSpace
-#from    Imager            import Imager
+  MAX_PROCESS_NB = 1
 
-# ------ COLORSPACE DEFINITION ------ #
-red_xy     = Vec2(0.64, 0.32)                                                   # Red           Coordinates vectors
-green_xy   = Vec2(0.30, 0.60)                                                   # Green         Coordinates vectors
-blue_xy    = Vec2(0.15, 0.06)                                                   # Blue          Coordinates vectors
-white_xy   = Vec2(0.3127, 0.3290)                                               # White         Coordinates vectors
+  # ------ COLORSPACE DEFINITION ------ #
+  red_xy     = Vec2(0.64, 0.32)                                                   # Red           Coordinates vectors
+  green_xy   = Vec2(0.30, 0.60)                                                   # Green         Coordinates vectors
+  blue_xy    = Vec2(0.15, 0.06)                                                   # Blue          Coordinates vectors
+  white_xy   = Vec2(0.3127, 0.3290)                                               # White         Coordinates vectors
 
-sRGBSpace  = ColorSpace(red_xy, green_xy, blue_xy, white_xy)                    # sRGB          ColorSpace
+  sRGBSpace  = ColorSpace(red_xy, green_xy, blue_xy, white_xy)                    # sRGB          ColorSpace
 
-# ------ PATHING DEFINITIONS ------ #
-ROOT            = path.dirname(path.abspath(__file__))
+  # ------ IMG HANDLER ------ #
+  imager = Imager()                                                               # create image handler
+  imager.requestImgCursor()                                                       # request user input
+  imager.verifySize()                                                             # verify chosen img size and shrink and save if user ask it
+  img = imager.getCursorToPixarray()                                              # get chosen img to an Array of pixels
 
-imageList = []
-for f in glob.glob("./*.png"):
-  imageList.append(re.split(r'\\', f)[1])
-for f in glob.glob("./*.jpg"):
-  imageList.append(re.split(r'\\', f)[1])
+  # ------ PIXEL BY PIXEL PROCESS ------ #
+  sounder          = Sounder()
 
-# ------ USER INPUT MANAGEMNT ------ #
-def error():
-  string =              "\n\n  Wrong selection."
-  string +=               "\n  Please choose a valid option."
-  string +=               "\n  ---------------------------------------------------------------------"
-  print(string)
-  return           False
+  pixelCount       = []
+  filledPixelCount = []
 
-# Displayer
-userInput        = False
-while userInput == False:                                                                                    # keep asking if wrong input | TODO: add exit choice
-  print                  ("\n  {} image found within application root directory:".format(len(imageList)))
-  for idx, img in enumerate(imageList):
-    print                  ("    [{}]. {}".format(idx, img))
-  userInput       = input("\n  Please pass the image id you want to sound - number between brackets: ")      # request image path index within selection
-
-  if userInput.isdigit():
-    userInput     = int(userInput)
-    if userInput >= 0 and userInput < len(imageList):
-      break
-
-  userInput       = error()
-
-# Image target definition
-imgPath = ROOT + "\\" + imageList[userInput]
-# TODO: Imager implementation
-# imager = Imager(imgPath)
-img     = mpimg.imread(imgPath)
-if img.dtype == np.float32:                                                        # if result isn't integer array
-  img   = (img * 255).astype(np.uint8)
-
-# ------ PIXEL BY PIXEL PROCESS ------ #
-sounder          = Sounder()
-pixelCount       = 0
-filledPixelCount = 0
-
-for pixelRow in img:
-  for pixel in pixelRow:                                                           # for each pixel in img
-    pixelCount += 1
-    RGBASum    = 0
-    for value in pixel.copy():
-      RGBASum += value
-    
-    if RGBASum * pixel[-1] > 0:                                                    # if (sum of RGB) * A > 0
-      filledPixelCount += 1
-      # print("{} at: [{}]".format(pixel, pixelCount))
-      sRGBColor = sRGBUtil.RGBToSRGB(pixel)                                        # get sRGB values from RGB
-      toXYZ     = sRGBSpace.sRGBColorToXYZ(sRGBColor)                              # get color XYZ position
-      # print("XYZ{} at: [{}]".format(toXYZ.toArray(), pixelCount))
-      XYZarray  = toXYZ.toArray()
-      sounder.requestXYZPlay(XYZarray, 0.2)
-
-# def rgbToHertz(rgb):
-#   hsv = clrs.rgb_to_hsv(rgb[0],rgb[1],rgb[2])
-#   aproxTone = getTonefromHSV(hls)
+  splitted = splitPixarray(MAX_PROCESS_NB, img)
+  t = time.time()
+  processes = []
+  for i in range(len(splitted)):
+    p = multiprocessing.Process(
+      name="pixelProcess{}".format(i),
+      target=pixelProcess(pixelCount, filledPixelCount, splitted[i], sRGBSpace, sounder))
+    processes.append(p)
+    p.start()
+  for p in processes:
+    p.join()
+  
+  print("\n  Ended at pixel: [{}] in {}".format(sum(x for x in pixelCount), time.time() - t))

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 __package__ = './'
-import copy
 import numpy as np
+
+import copy
 
 #**********************
 class Vec2:

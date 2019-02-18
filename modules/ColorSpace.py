@@ -70,10 +70,10 @@ class ColorSpace:
     return m
   
   # --------------------------------------
-  def sRGBColorToXYZ(self, sRGBColor):
+  def RGBColorToXYZ(self, RGBColor):
   # returns given color converted into XYZ
   # --------------------------------------
-    return self.toXYZ.mulVec(sRGBColor.get_sRGBVec().copy().gammaExpand())
+    return self.toXYZ.mulVec(RGBColor.get_RGBVec().copy().gammaExpand())
   
   # -------------------------------------
   def XYZColorTosRGB(self, XYZColor):

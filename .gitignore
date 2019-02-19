@@ -1,7 +1,10 @@
 # hiddens
 .transformed/*
 
-#wip
+# tester space
+tester.py
+
+# when MATH
 interpnd.pyx
 
 # Byte-compiled / optimized / DLL files

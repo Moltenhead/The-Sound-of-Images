@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+'''**********************************************************************************
+Redesigned and translated to python
+vector system from :
+@http://www.ryanjuckett.com/programming/rgb-color-space-conversion/
+
+Will be used once MATH
+**********************************************************************************'''
 import sys
 sys.path.append(".\\")
 from  modules.vectorizedMatrix import Vec3, Mat3x3

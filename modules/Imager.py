@@ -14,10 +14,10 @@ from    os        import path, pardir
 
 ROOT              = path.dirname(path.abspath(path.join(__file__, pardir)))
 TRANSFORMED_PATH  = ROOT + "\\.transformed\\"
-MAX_PIXELS        = 10**3 * 5
+MAX_PIXELS        = int(10**2 * 1.5)
 
 class Imager:
-  def __init__(self, ext = ['.png', '.jpg'], img_paths= ['.\\']):
+  def __init__(self, ext = ['.png', '.jpg'], img_paths= ['.\\img\\']):
     self.img_ext = ext
     self.img_paths = img_paths
 
@@ -114,7 +114,7 @@ class Imager:
       userInput = False
       while userInput is False:
         string = "\n  Image is {}pixels long. Would you like to shrink it to around {} pixels?".format(pixelsNb, MAX_PIXELS)
-        string += "\n  No shrink could make the process realy long - approximatly 2 to 3 seconds / 10 000px. (y/n):"
+        string += "\n  No shrink could make the process realy long - approximatly 1 second / 100px. (y/n):"
         userInput = input(string)
         if userInput == 'y' or userInput == 'n':
           if userInput is 'y':

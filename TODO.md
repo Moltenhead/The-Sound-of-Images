@@ -1,4 +1,3 @@
 # TODO:
-1. Sound management - the end is not so near
-2. better commentary and readability within modules
-3. clean-up
+1. Redo sound management with true wavelength calculation
+2. Better Ui

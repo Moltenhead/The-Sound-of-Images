@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
-__package__ = './'
+'''**********************************************************************************
+Redesigned and translated to python
+vector system from :
+@http://www.ryanjuckett.com/programming/rgb-color-space-conversion/
+
+Will be used once MATH
+**********************************************************************************'''
 import numpy as np
 
 import copy

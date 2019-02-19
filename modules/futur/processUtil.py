@@ -5,7 +5,10 @@ from    sys       import path
 path.append('.')
 from    .RGBUtil  import RGB
 
+#****************************************************
 def splitPixarray(maxProcessNb, pixarray):
+# split a pixarray into a given number of subpixarray
+#****************************************************
   height = len(pixarray)
   width = len(pixarray[0])
   total = height * width
@@ -36,7 +39,9 @@ def splitPixarray(maxProcessNb, pixarray):
   
   return splitStruct
 
+#*****************************************************************************
 def pixelProcess(pixelCount, filledPixelCount, pixarray, colorSpace, sounder):
+#*****************************************************************************
   print("\n      Initialized new pixelProcess.")
   countDecal = sum(x for x in pixelCount)
   count = 0
@@ -58,7 +63,7 @@ def pixelProcess(pixelCount, filledPixelCount, pixarray, colorSpace, sounder):
       toXYZ     = colorSpace.RGBColorToXYZ(RGBColor)                             # get color XYZ position
       # print("XYZ{} at: [{}]".format(toXYZ.toArray(), countDecal + count))
       XYZarray  = toXYZ.toArray()
-      sounder.requestXYZPlay(XYZarray, 0.2)
+      sounder.requestXYZPlay(RGBColor, XYZarray, 0.2)
   
   pixelCount.append(count)
   filledPixelCount.append(filledCount)

@@ -161,12 +161,14 @@ class Sounder:
   # --------------------------------
     if not isinstance(frequency, float):
       return False
+
+    pitch = downToPitch(convertWlToTHz(frequency))
     numberOfFrames = int(BITRATE * seconds)
     restFrames = numberOfFrames % BITRATE
     waveData = ''
 
     for x in range(numberOfFrames):
-      waveData += chr(int(math.sin(x / ((BITRATE / frequency) / 2*math.pi)) * 127 + 128))
+      waveData += chr(int(math.sin(x / ((BITRATE / pitch) / 2*math.pi)) * 127 + 128))
     
     # fill remainder of frameset with silence
     for x in range(restFrames):
@@ -193,10 +195,17 @@ class Sounder:
     toTHz = convertWlToTHz(wavelength)
     self.play(toTHz, seconds)
 
-#************************************
+#******************************
 def convertWlToTHz(wavelength):
 # wavelength in nm to THz
-#************************************
+#******************************
   if isinstance(wavelength, float):
     return THZ_TO_NM / wavelength
   return False
+
+#********************
+def downToPitch(thz):
+#********************
+  if isinstance(thz, float):
+    return thz / 2**40                          # THz reduced by 40 octave to match a sound
+  return

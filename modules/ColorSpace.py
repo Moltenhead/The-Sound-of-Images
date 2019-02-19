@@ -12,10 +12,10 @@ class ColorSpace:
     self.blue = blue_xy
     self.white = white_xy
 
-    self.toXYZ = self.get_ConvertedToXYZ()
+    self.toXYZ = self.get_ConverterToXYZ()
 
   # --------------------------------------------
-  def get_ConvertedToXYZ(self):
+  def get_ConverterToXYZ(self):
   # Convert a linear sRGB color to an sRGB color
   # --------------------------------------------
     # generate xyz chromaticity coordinates (x + y + z = 1) from xy coordinates
@@ -56,7 +56,6 @@ class ColorSpace:
     #
     # We now have an equation for the components of the scale matrix 'S' and
     # can compute 'M' from 'N' and 'S'
-
     m = Mat3x3()
     m.setCol(0, r)
     m.setCol(1, g)
@@ -73,10 +72,10 @@ class ColorSpace:
   def RGBColorToXYZ(self, RGBColor):
   # returns given color converted into XYZ
   # --------------------------------------
-    return self.toXYZ.mulVec(RGBColor.get_RGBVec().copy().gammaExpand())
+    return self.toXYZ.mulVec(RGBColor.get_RGBVec().copy().gammaExpand())            # gammaExpand turns the RGB non linear
   
   # -------------------------------------
   def XYZColorTosRGB(self, XYZColor):
   # returns given XYZ converted into sRGB
   # -------------------------------------
-    return self.toXYZ.copy().invert().mulVec(XYZColor.copy()).gammaCompress()
+    return self.toXYZ.copy().invert().mulVec(XYZColor.copy()).gammaCompress()       # gammaCompress turns a non linear to linear

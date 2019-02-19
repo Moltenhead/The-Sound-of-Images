@@ -1,4 +1,4 @@
-![alt-text][blowing-mind]
+![alt-text](https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif "blowing mind gif")
 
 # The Sound of Images
 Trying to produce sounds, based on images

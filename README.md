@@ -1,4 +1,4 @@
-![alt-text](https://gph.is/2AmePHo "blowing mind gif")
+![alt-text][blowing-mind]
 
 # The Sound of Images
 Trying to produce sounds, based on images
@@ -19,4 +19,4 @@ Trying to produce sounds, based on images
 * [Color to pitch diagram](https://www.flutopedia.com/img/ColorOfSound_Nextdrum_lg.jpg)
 
 
-[blowing-mind]: https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif "blowing mind gif"
+[blowing-mind]: https://github.com/Moltenhead/The-Sound-of-Images/edit/master/blowing_mind.gif "blowing mind gif"

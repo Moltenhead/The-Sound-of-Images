@@ -21,7 +21,7 @@ Also each pixel is played as a more or less 0.2 seconds sound right now. So mult
    
 ## Features Needed:
 * Pattern recognition
-* Registering same-ish adjacent pixels as a longer note - instead of singular (will improve execution)
+* Registering same-ish adjacent pixels as a longer note - instead of singular ones (will improve execution)
 * More user options
 * Pattern usage for better composition
 * Displaying home key and chords progression

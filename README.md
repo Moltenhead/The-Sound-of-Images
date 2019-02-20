@@ -25,7 +25,7 @@ Also each pixel is played as a more or less 0.2 seconds sound right now. So mult
 * More user options
 * Pattern usage for better composition
 * Displaying home key and chords progression
-* Stop cheating ! Use real math.:hankey:
+* Stop cheating ! Use real math.
 <br/>
 <hr/>
 

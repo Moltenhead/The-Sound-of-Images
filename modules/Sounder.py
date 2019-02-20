@@ -2,13 +2,10 @@
 from __future__ import division
 # ------ IMPORTS ------ #
 # Ext
-import  csv
 import  numpy               as     np
 from    pyaudio             import PyAudio
-# from    scipy.interpolate   import griddata 
 # Local
 import  math
-import  itertools
 from    time                import time
 from    operator            import or_, and_
 from    os                  import path, pardir
@@ -18,10 +15,8 @@ sys.path.append('.')
 from    .RGBUtil            import RGB
 
 # ------ CONSTANTS ------ #
-# ROOT            = path.dirname(path.abspath(path.join(__file__, pardir)))
-# CONVERTER_PATH  = ROOT + "\\ressources\\XYZ_to_Wavelength_nm.csv"         # conversion table of XYZ to Wavelength in nanometer
-HZ_TO_M         = 299792458                                                 # 1 THz = THZ_TO_M wavelength in meter
-BITRATE         = 16000                                                     # number of frames per seconds
+HZ_TO_M         = 299792458                                                 # 1 Hz = HZ_TO_M wavelength in meter
+BITRATE         = 22050                                                     # number of frames per seconds
 numberOfFrames  = int(BITRATE * 0.2)                                        # set time for each sound
 
 #*************
@@ -31,171 +26,10 @@ class Sounder:
   def __init__(self):
   # ----------------------
     self.noise = b''
-    ''' will be needed once MATH
-    self.cursor = -1
-
-    self.__wavelengthTable = []
-    with open(CONVERTER_PATH, 'r') as csvfile:
-      dictReader = csv.DictReader(csvfile)
-      for row in dictReader:
-        self.__wavelengthTable.append(row)
-      csvfile.close()
-    
-    self.table = {
-      'X': [],
-      'Y': [],
-      'Z': [],
-      'WL': []
-    }
-    for row in self.__wavelengthTable:
-      self.table['X'].append(float(row['X']))
-      self.table['Y'].append(float(row['Y']))
-      self.table['Z'].append(float(row['Z']))
-      self.table['WL'].append(float(row['WL']))
-    '''
-
-  ''' The WIP side of things, one day it will math
-  # ------------------------------------
-  def get_tableAt(self, rowIdx,  label):
-  # ------------------------------------
-    if rowIdx >= self.get_tableLength():
-      return False
-    return self.__wavelengthTable[rowIdx][label.upper()]
-
-  # ----------------------------
-  def get_cursorAt(self, label):
-  # ----------------------------
-    return self.get_tableAt(self.cursor, label)
   
-  # ------------------------
-  def get_tableLength(self):
-  # ------------------------
-    return len(self.__wavelengthTable)
-  
-  # --------------------
-  def cursorReset(self):
-  # --------------------
-    self.cursor = -1
-
-  # -----------------------------------------
-  def cursorMatchAt(self, matchValue, label):
-  # -----------------------------------------
-    while matchValue != self.get_cursorAt(label):
-      self.cursor += 1
-      if self.cursor > self.get_tableLength():
-        return False
-    
-    return self.get_cursorAt(label)
-  
-  # -----------------------------------------
-  def findNearestAt(self, matchValue, label):
-  # -----------------------------------------
-    array = np.asarray(self.table[label])
-    idx = (np.abs(array - matchValue)).argmin()
-    return idx
-  
-  # -----------------------------------------
-  def findNearestWithin(self, matchValue, label, sample):
-  # -----------------------------------------
-    idxLimits = [x - 380 for x in sample]
-    sliced = []
-    for value in itertools.islice(self.table[label], idxLimits[0], idxLimits[1]):
-      sliced.append(value)
-    
-    array = np.array(sliced)
-    idx = (np.abs(array - matchValue)).argmin() + idxLimits[0]
-    return idx
-  
-  # can't use while I don't know what I'm doing
-  # def interpolate(self, matchValue):
-  #   points = np.array(self.table['X'], self.table['Y'], self.table['Z'])
-  #   grid_x, grid_y = np.mgrid[0:1:100j, 0:1:200j]
-  #   grid = griddata(points, matchValue, (grid_x, grid_y), method='nearest')
-  #   print(grid)
-  #   return grid
-  
-  # -------------------------------------
-  def aproxMatch(self, rgb, XYZArray):
-  # -------------------------------------
-    wlTendency = waveTendency(rgb)
-
-    x = float(round(XYZArray[0] * 10, 4))
-    y = float(round(XYZArray[1] * 10, 4))
-    z = float(round(XYZArray[2] * 10, 4))
-    # print("\n    [{}:{}:{}]".format(x,y,z))
-    xfound = self.findNearestWithin(x, 'X', wlTendency)
-    yfound = self.findNearestWithin(y, 'Y', wlTendency)
-    zfound = self.findNearestWithin(z, 'Z', wlTendency)
-    # print("    [{}:{}:{}]".format(xfound,yfound,zfound))
-    
-    mx = max([xfound, yfound, zfound])
-    mn = min([xfound, yfound, zfound])
-    diff = mx - mn
-    print(diff)
-
-    if diff > 5 or mx <= 0:
-      return False
-   
-    print("    [{}:{}:{}]".format(xfound,yfound,zfound))
-    return (xfound + yfound + zfound)/3
-  '''
-  ''' Previous test iterator
-  # -------------------------------------
-  def cursorIterateMatch(self, XYZArray):
-  # -------------------------------------
-    x = float(round(XYZArray[0]*10, 4))
-    y = float(round(XYZArray[1]*10, 4))
-    z = float(round(XYZArray[2]*10, 4))
-    # print("[{}:{}:{}]".format(x,y,z))
-    # self.findNearestAt(XYZArray)
-    found = False
-    while found == False:
-      if self.cursor >= self.get_tableLength():
-        break
-      found = self.cursorMatchAt(x, 'X')
-      if found != False:
-        # print("x:{}".format(x))
-        found = self.cursorMatchAt(y, 'Y')
-        if found != False:
-          # print("y:{}".format(y))
-          found = self.cursorMatchAt(z, 'Z')
-          if found != False:
-            # print("z:{}".format(z))
-            self.cursorReset
-            return found
-      # print(found)
-      found = False
-      self.cursorReset()
-      return found
-  '''
-  '''
-  # --------------------------------
-  def estimateWaveAtXYZ(self, rgb, XYZArray):
-  # --------------------------------
-    # found = self.cursorIterateMatch(XYZArray)
-    found = self.aproxMatch(rgb, XYZArray)
-    print(found)
-    if found is False:
-      # print("Ended with no match for {}:{}:{}".format(
-      #   XYZArray[0],
-      #   XYZArray[1],
-      #   XYZArray[2]))
-      return found
-    
-    if isinstance(found, list):
-      return found['WL']
-    return found
-
-  def requestTHzAtXYZ(self, rgb, XYZArray):
-    wavelength = self.estimateWaveAtXYZ(rgb, XYZArray)
-    # print(wavelength)
-    if wavelength is False:
-      # print("    No match.")
-      return
-    
-    return convertWlToHz(wavelength)
-  '''
-  def pixarrayToNoise(self, pixarray):#, colorSpace):
+  # ----------------------------------
+  def pixarrayToNoise(self, pixarray):
+  # ----------------------------------
     t = time()
     pixelCount = 0
     filledCount = 0
@@ -206,17 +40,9 @@ class Sounder:
         pixelCount += 1
         RGBASum    = sum(v for v in pixel)
         
-        if RGBASum * pixel[-1] > 0:                                                  # if (sum of RGB) * A > 0
+        if RGBASum * pixel[-1] > 0:                                   # if (sum of RGB) * A > 0
           filledCount += 1
-          RGBColor = RGB(pixel[0], pixel[1], pixel[2])                               # get sRGB values from RGB
-          ''' when MATH
-          # c = RGBColor.get_RGBVec() 
-          # print("{}:{}:{}".format(c.x, c.y, c.z))
-          # toXYZ     = colorSpace.RGBColorToXYZ(RGBColor)                           # get color XYZ position
-          # print("XYZ{} at: [{}]".format(toXYZ.toArray(), countDecal + count))
-          # XYZArray  = toXYZ.toArray()
-          # frequency = self.requestTHzAtXYZ(RGBColor, XYZArray)
-          '''
+          RGBColor = RGB(pixel[0], pixel[1], pixel[2])                # get sRGB values from RGB
           aproxWl = waveTendency(RGBColor)
           wl = aproxWl['wave']
           # print(wl)
@@ -239,7 +65,7 @@ class Sounder:
     
     pA = PyAudio()
     stream = pA.open(
-      format = pA.get_format_from_width(1),
+      format = pA.get_format_from_width(1),       # 8 bit
       channels = 1,
       rate = BITRATE,
       output = True)

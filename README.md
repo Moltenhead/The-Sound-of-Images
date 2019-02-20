@@ -13,7 +13,7 @@ Trying to produce sounds, based on images
 
 ### Don't over do it :
 This is not yet optimized, depending on your processor 100 pixels are processed within approximately one second. So if you don't want to wait the following ice age answer `yes` at the shrinking question prompt.
-Also each pixel is played as a more or less 0.2 seconds sound right now. So multiply by your goal pixel and you will know for how long you'll get beeped.
+Also each pixel is played as a more or less 0.2 seconds sound right now. So multiply by your image pixel number and you will know for how long you'll get beeped.
 
 ## Working On :
 * User interface

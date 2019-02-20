@@ -5,8 +5,8 @@ if __name__ == '__main__':                                                      
     _________________________________________________
   '''
   # ------ IMPORTS ------ #
-  from    modules.Imager                  import Imager
-  from    modules.Sounder                 import Sounder
+  from    modules.Imager    import Imager
+  from    modules.Sounder   import Sounder
 
   # ------ IMG HANDLER ------ #
   imager = Imager()                                                               # create image handler

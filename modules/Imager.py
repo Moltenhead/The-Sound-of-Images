@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
+# ------ IMPORTS ------ #
+# Ext
 import  numpy              as np
 import  matplotlib.image   as mpimg
-
+# Local
 import  re
 import  sys
 import  math
-import  glob
-
+from    glob      import glob
 from    PIL       import Image
-from    shutil    import copyfile
 from    fractions import Fraction
 from    os        import path, pardir
 
@@ -46,7 +46,7 @@ class Imager:
     imgCount = 0
     for path in self.img_paths:
       for ext in self.img_ext:
-        for img_fullPath in glob.glob(path + "*" + ext):
+        for img_fullPath in glob(path + "*" + ext):
           self.appendImg(img_fullPath)
           imgCount += 1
   

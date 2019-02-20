@@ -4,12 +4,13 @@ Trying to produce sounds, based on images
 ![alttext][blowingmind]
 
 ## How to use :
-1. download/clone this repository
-2. execute `python setup.py install` from the application root to install dependencies
-3. add images you want to test within `.\img` from application root
-4. execute `python __main__.py`
-5. select image to play and select size option
-6. listen
+1. verify you posess a Python3 version active - if not [install one](https://www.python.org/downloads/release/python-372/)
+2. download/clone this repository
+3. execute `python setup.py install` from the application root to install dependencies
+4. add images you want to test within `.\img` from application root
+5. execute `python __main__.py`
+6. select image to play and select size option
+7. listen
 
 ### Don't over do it :
 This is not yet optimized, depending on your processor 100 pixels are processed within approximately one second. So if you don't want to wait the following ice age answer `yes` at the shrinking question prompt.

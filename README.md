@@ -8,7 +8,7 @@ Trying to produce sounds, based on images
    * need to find what is the true problem (from converter or from relying on a nm by nm only table)
    
 ## Features Needed:
-* modular image "shrinker" to avoid passing through hundred thousands of pixels
+* Look-up function to match XYZ to conversion table
 <br/>
 <hr/>
 

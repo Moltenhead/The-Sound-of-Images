@@ -1,7 +1,7 @@
-![alttext][blowingmind]
-
 # The Sound of Images
 Trying to produce sounds, based on images
+
+![alttext][blowingmind]
 
 ## Working On :
 * Most of the basics are good, there is incompatibility between XYZ converter and wavelength table though

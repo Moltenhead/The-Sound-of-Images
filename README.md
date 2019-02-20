@@ -4,11 +4,10 @@
 Trying to produce sounds, based on images
 
 ## Working On :
-* Most of the basics are good, there is incompatibility between XYZ converter and wavelength table though
-   * need to find what is the true problem (from converter or from relying on a nm by nm only table)
+* User interface
    
 ## Features Needed:
-* Look-up function to match XYZ to conversion table
+* Pattern recognition
 <br/>
 <hr/>
 

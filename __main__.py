@@ -14,7 +14,7 @@ if __name__ == '__main__':                                                      
   imager.verifySize()                                                             # verify chosen img size and shrink and save if user ask it
   img = imager.getCursorToPixarray()                                              # get chosen img to an Array of pixels
 
-  # ------ PIXEL BY PIXEL PROCESS ------ #
+  # ------ SOUND HANDLER ------ #
   sounder = Sounder()                                                             # create sound handler
-  sounder.pixarrayToNoise(img)                                                    # register noise from a pixarray
-  sounder.playNoise()                                                             # play
+  sounder.pixarrayToNoise(img)                                                    # register noises using a pixarray for each pixel
+  sounder.playNoise()                                                             # play the registered noise

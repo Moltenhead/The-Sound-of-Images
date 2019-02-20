@@ -7,7 +7,7 @@ Trying to produce sounds, based on images
 1. verify you posess a Python3 version active on your OS - if not [install one](https://www.python.org/downloads/release/python-372/)
 2. download/clone this repository
 3. execute `python setup.py install` from the application root to install dependencies
-4. add images you want to test within `.\img` from application root
+4. add images you want to test within `./img` from application root
 5. execute `python __main__.py` from the application root to start the app
 6. select image to play and select size option
 7. listen

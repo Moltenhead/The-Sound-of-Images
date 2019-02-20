@@ -4,7 +4,7 @@ Trying to produce sounds, based on images
 ![alttext][blowingmind]
 
 ## How to use :
-1. download
+1. download / clone this repository
 2. execute `python setup.py install` from the application root to install dependencies
 3. add images you want to test within `.\img` from application root
 4. execute `python __main__.py`
